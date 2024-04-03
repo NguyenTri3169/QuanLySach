@@ -1,0 +1,67 @@
+﻿@model List<QuanLySach.Models.Sach>
+@{
+    ViewBag.Title = "Home Page";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Năm xuất bản</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sach in Model)
+        {
+            <tr>
+                <td>@sach.Id</td>
+                <td>@sach.TieuDe</td>
+                <td>@sach.TacGia</td>
+                <td>@sach.NamXuatBan</td>
+                <td>
+                    <button class="btn btn-info" onclick="editsach(@sach.Id)">Sửa</button>
+                    <button class="btn btn-danger" onclick="deletesach(@sach.Id)">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        // Load danh sách sách khi trang được tải
+        loadsachs();
+    });
+
+    // Hàm gọi Ajax để lấy danh sách sách
+    function loadsachs() {
+        $.ajax({
+            url: '@Url.Action("GetAllsachs", "Home")', // Thay đổi từ "Sach" thành "Home" vì action nằm trong HomeController
+            type: 'GET',
+            success: function (data) {
+                // Hiển thị danh sách sách lên view
+                // Code để hiển thị dữ liệu vào table tại đây
+            }
+        });
+    }
+
+    // Hàm gọi Ajax để xóa sách
+    function deletesach(id) {
+        $.ajax({
+            url: '@Url.Action("Deletesach", "Home")', // Thay đổi từ "Sach" thành "Home" vì action nằm trong HomeController
+            type: 'POST',
+            data: { id: id },
+            success: function () {
+                // Sau khi xóa sách, load lại danh sách sách
+                loadsachs();
+            }
+        });
+    }
+
+    // Hàm gọi Ajax để sửa sách (chưa cần thiết trong ví dụ này)
+    function editsach(id) {
+        // Code tương tự như deletesach để gọi Ajax và sau đó load lại danh sách
+    }
+</script>
